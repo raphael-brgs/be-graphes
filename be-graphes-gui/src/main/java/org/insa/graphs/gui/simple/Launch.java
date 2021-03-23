@@ -18,6 +18,8 @@ import org.insa.graphs.model.io.GraphReader;
 import org.insa.graphs.model.io.PathReader;
 
 public class Launch {
+	
+	/* Raphael Bourgeois , 23/03/21
 
     /**
      * Create a new Drawing inside a JFrame an return it.
