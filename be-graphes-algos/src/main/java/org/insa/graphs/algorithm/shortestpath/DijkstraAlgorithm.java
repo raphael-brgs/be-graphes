@@ -20,9 +20,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         final int nbNodes = graph.size();
         
         // On initialise les labels de tout les nodes du graph
-        Label new_lab ; 
+         
         
         for (Node node: graph.getNodes()) {
+        	Label new_lab ; 
         	new_lab = new Label (node) ;
         }
         
