@@ -5,7 +5,7 @@ import org.insa.graphs.model.Node;
 
 import java.util.ArrayList;
 
-public class Label {
+public class Label implements Comparable<Label> {
 	
 	// Attributes of labels
 	
@@ -17,7 +17,7 @@ public class Label {
 	
 	private Arc father ; // arc menant au père 
 	
-	private static ArrayList<Label> tabLabel ;  
+	private static ArrayList<Label> tabLabel = new ArrayList<Label>();  
 	
 	// Constructor of label
 	
@@ -67,5 +67,19 @@ public class Label {
 	
 	public Label getLabel(Node actuel) {
 		return Label.tabLabel.get(actuel.getId()) ;
+	}
+	
+	public void clear() {
+		this.clear();
+	}
+
+
+	@Override
+	public int compareTo(Label other) {
+		int result = 0 ;
+		if (this.getCost() < other.getCost()) {result = -1 ;}
+		if (this.getCost() == other.getCost()) {result = 0 ;}
+		if (this.getCost() > other.getCost()) { result = 1 ;}
+		return result;
 	}
 }
