@@ -3,8 +3,6 @@ package org.insa.graphs.algorithm.utils;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
 
-import java.util.ArrayList;
-
 public class Label implements Comparable<Label> {
 	
 	// Attributes of labels
@@ -17,7 +15,7 @@ public class Label implements Comparable<Label> {
 	
 	private Arc father ; // arc menant au père 
 	
-	private static ArrayList<Label> tabLabel = new ArrayList<Label>();  
+	private boolean inTas;  
 	
 	// Constructor of label
 	
@@ -26,7 +24,7 @@ public class Label implements Comparable<Label> {
 		this.marked = false ; 
 		this.cost = Double.POSITIVE_INFINITY ;
 		this.father = null ;
-		Label.tabLabel.add(this.current.getId(), this); ;
+		this.inTas = false ;
 	}
 	
 	
@@ -44,8 +42,8 @@ public class Label implements Comparable<Label> {
 		return marked;
 	}
 
-	public void setMarked(boolean marked) {
-		this.marked = marked;
+	public void setMarked() {
+		this.marked = true;
 	}
 
 	public Node getCurrent() {
@@ -65,8 +63,13 @@ public class Label implements Comparable<Label> {
 	}
 	
 	
-	public Label getLabel(Node actuel) {
-		return Label.tabLabel.get(actuel.getId()) ;
+	public boolean isInTas() {
+		return inTas;
+	}
+
+
+	public void setInTas(boolean inTas) {
+		this.inTas = inTas;
 	}
 	
 	public void clear() {
