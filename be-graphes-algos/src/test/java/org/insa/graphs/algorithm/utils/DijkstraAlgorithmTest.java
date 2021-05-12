@@ -74,16 +74,6 @@ public class DijkstraAlgorithmTest {
         e2f = Node.linkNodes(nodes[4], nodes[5], 10, speed10, null);
 
         graph = new Graph("ID", "", Arrays.asList(nodes), null);
-
-        emptyPath = new Path(graph, new ArrayList<Arc>());
-        singleNodePath = new Path(graph, nodes[1]);
-        shortPath = new Path(graph, Arrays.asList(new Arc[] { a2b, b2c, c2d_1 }));
-        longPath = new Path(graph, Arrays.asList(new Arc[] { a2b, b2c, c2d_1, d2e }));
-        loopPath = new Path(graph, Arrays.asList(new Arc[] { a2b, b2c, c2d_1, d2a }));
-        longLoopPath = new Path(graph,
-                Arrays.asList(new Arc[] { a2b, b2c, c2d_1, d2a, a2c, c2d_3, d2a, a2b, b2c }));
-        invalidPath = new Path(graph, Arrays.asList(new Arc[] { a2b, c2d_1, d2e }));
-
     }
 	
 	@Test
@@ -153,6 +143,6 @@ public class DijkstraAlgorithmTest {
 		ShortestPathData data = new ShortestPathData(graph,path.getOrigin(),path.getDestination(),ArcInspectorFactory.getAllFilters().get(3)) ; // On prend l'inspecteur time + only car allowed
 		ShortestPathAlgorithm Dijkstra = new DijkstraAlgorithm(data) ;
 		ShortestPathSolution solutionD = Dijkstra.run() ;
-		assertEquals(solutionD.getPath().getLength(),path.getLength(),1e-6) ; // On doit avoir obtenir un chemin egal en longueur au chemin optimal
+		assertEquals(solutionD.getPath().getMinimumTravelTime(),path.getMinimumTravelTime(),1e-6) ; // On doit avoir obtenir un chemin egal en temps au chemin optimal
 	}
 }

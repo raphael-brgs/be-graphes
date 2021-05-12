@@ -249,7 +249,7 @@ public class Path {
     	if (this.getArcs().get(0).getOrigin() != this.origin) { // le 1er arc n'a pas pour origin l'origine du path 
     		return false;
     	}
-    	for (int i = 0; i < Math.min( 2, this.getArcs().size() ) ; i++) { // on verifie que la destiniation de chaque arc est l'origne de l'arc suivant
+    	for (int i = 0; i < this.getArcs().size()-1 ; i++) { // on verifie que la destiniation de chaque arc est l'origne de l'arc suivant
     		if (this.getArcs().get(i).getDestination() != this.getArcs().get(i+1).getOrigin()) {
     			return false;
     		}
