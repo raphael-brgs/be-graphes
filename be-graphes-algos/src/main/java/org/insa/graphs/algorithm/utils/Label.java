@@ -85,4 +85,8 @@ public class Label implements Comparable<Label> {
 		if (this.getCost() > other.getCost()) { result = 1 ;}
 		return result;
 	}
+	@Override
+	public String toString() {
+		return " Node id : " + this.getCurrent().getId() + " Label cost : " + this.getCost() ;
+	}
 }

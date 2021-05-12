@@ -58,7 +58,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	Label actuel = null ; 
         	// On supprime le minimum du tas et on le recupere
         	try {
-        		actuel = tas.deleteMin() ; 
+        		actuel = tas.deleteMin() ;
+        		actuel.setInTas(false);
         	} catch (EmptyPriorityQueueException e) {
         		return new ShortestPathSolution(data, Status.INFEASIBLE);
         	}		

@@ -141,10 +141,15 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     	int index_init = this.array.indexOf(x) ; // on recupère l'index de l'element en question
     	if(index_init == -1 || index_init >= this.currentSize )  throw new ElementNotFoundException(x) ; // cas ou la fonction indexOf n'a pas trouvé x ou bien x se situe au dela du tas dans le tableau 
     	// on echange cet element avec le dernier element du tas
+    	if ( index_init < this.currentSize-1) { 
     	E last_element = this.array.get(--this.currentSize) ; // on decremente la taille et on recupere le dernier element
     	this.arraySet( index_init, last_element );
     	this.percolateDown(index_init) ;
     	this.percolateUp(index_init);
+    	}
+    	else { // cas où l'on supprime le dernier element
+    	this.currentSize--;
+    	}
     }
 
     @Override
