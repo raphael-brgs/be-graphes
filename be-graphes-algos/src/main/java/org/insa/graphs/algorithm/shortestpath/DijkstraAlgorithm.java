@@ -38,8 +38,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         // Initialisation du tas de labels
         BinaryHeap<Label> tas = new BinaryHeap<Label>() ;
          
-        // Cas si le sommet de depart == sommet d'arriver ?? 
-      
+        // Cas si le sommet de depart == sommet d'arriver
+        if (data.getOrigin() == data.getDestination()) {
+        	solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getOrigin()));
+        	return solution;
+        }
         // On ajoute le sommet de depart 
         Label labDeb = new Label (data.getOrigin()) ;
         tabLabels[labDeb.getCurrent().getId()] = labDeb ;
@@ -116,8 +119,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         }
 
-        // la destination a un coût infini dans les label, la solution n'est pas faisable
-        if ( tabLabels[data.getDestination().getId()].getCost() == Double.POSITIVE_INFINITY) {
+        // la destination a un coût infini ou n'est pas present dans les label, la solution n'est pas faisable
+        if (tabLabels[data.getDestination().getId()] == null || tabLabels[data.getDestination().getId()].getCost() == Double.POSITIVE_INFINITY  ) {
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);
         }
         else {
