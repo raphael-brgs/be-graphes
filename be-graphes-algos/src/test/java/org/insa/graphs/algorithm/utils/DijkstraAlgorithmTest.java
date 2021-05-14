@@ -5,9 +5,7 @@ import static org.junit.Assert.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.insa.graphs.algorithm.AbstractSolution.Status;
@@ -19,8 +17,10 @@ import org.insa.graphs.algorithm.shortestpath.ShortestPathData;
 import org.insa.graphs.algorithm.shortestpath.ShortestPathSolution;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Graph;
+import org.insa.graphs.model.GraphStatistics;
 import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Path;
+import org.insa.graphs.model.Point;
 import org.insa.graphs.model.RoadInformation;
 import org.insa.graphs.model.RoadInformation.RoadType;
 import org.insa.graphs.model.io.BinaryGraphReader;
@@ -41,12 +41,11 @@ public class DijkstraAlgorithmTest {
     // List of arcs in the graph, a2b is the arc from node A (0) to B (1).
     @SuppressWarnings("unused")
     private static Arc a2b, a2c, a2e, b2c, c2d_1, c2d_2, c2d_3, c2a, d2a, d2e, e2d, e2f;
-
-    // Some paths...
-    private static Path emptyPath, singleNodePath, shortPath, longPath, loopPath, longLoopPath,
-            invalidPath;
-
-	
+    
+    protected ShortestPathAlgorithm newAlgo (ShortestPathData data) {
+    	return new DijkstraAlgorithm(data) ;
+    }
+    
 	@BeforeClass
     public static void initAll() throws IOException {
 
@@ -56,10 +55,13 @@ public class DijkstraAlgorithmTest {
 
         // Create nodes
         nodes = new Node[6];
-        for (int i = 0; i < nodes.length; ++i) {
-            nodes[i] = new Node(i, null);
-        }
-
+        nodes[0] = new Node(0, new Point(0,0));
+        nodes[1] = new Node(1, new Point(0,10));
+        nodes[2] = new Node(2, new Point(10,0));
+        nodes[3] = new Node(3, new Point(10,10));
+        nodes[4] = new Node(4, new Point(10,20));
+        nodes[5] = new Node(5, new Point(0,20));
+    
         // Add arcs...
         a2b = Node.linkNodes(nodes[0], nodes[1], 10, speed10, null);
         a2c = Node.linkNodes(nodes[0], nodes[2], 15, speed10, null);
@@ -72,14 +74,16 @@ public class DijkstraAlgorithmTest {
         d2e = Node.linkNodes(nodes[3], nodes[4], 22.8f, speed20, null);
         e2d = Node.linkNodes(nodes[4], nodes[3], 10, speed10, null);
         e2f = Node.linkNodes(nodes[4], nodes[5], 10, speed10, null);
+        
 
-        graph = new Graph("ID", "", Arrays.asList(nodes), null);
+        graph = new Graph("ID", "", Arrays.asList(nodes), new GraphStatistics(null,9,1,72,1));
+         
     }
 	
 	@Test
 	public void SolutionValid() {
 		ShortestPathData data = new ShortestPathData(graph,nodes[0],nodes[4],ArcInspectorFactory.getAllFilters().get(0)) ;
-		ShortestPathAlgorithm Dijkstra = new DijkstraAlgorithm(data) ;
+		ShortestPathAlgorithm Dijkstra = newAlgo(data) ;
 		ShortestPathSolution solutionD = Dijkstra.run() ;
 		assertTrue(solutionD.getPath().isValid()) ; // On regarde si la solution est valide
 	}
@@ -87,7 +91,7 @@ public class DijkstraAlgorithmTest {
 	@Test
 	public void CheminSimple() {
 		ShortestPathData data = new ShortestPathData(graph,nodes[0],nodes[4],ArcInspectorFactory.getAllFilters().get(0)) ;
-		ShortestPathAlgorithm Dijkstra = new DijkstraAlgorithm(data) ;
+		ShortestPathAlgorithm Dijkstra = newAlgo(data) ;
 		ShortestPathAlgorithm Bellman = new BellmanFordAlgorithm(data) ;
 		ShortestPathSolution solutionD = Dijkstra.run() ;
 		ShortestPathSolution solutionB = Bellman.run() ;
@@ -97,7 +101,7 @@ public class DijkstraAlgorithmTest {
 	@Test
 	public void CheminInexistant() {
 		ShortestPathData data = new ShortestPathData(graph,nodes[5],nodes[0],ArcInspectorFactory.getAllFilters().get(0)) ;
-		ShortestPathAlgorithm Dijkstra = new DijkstraAlgorithm(data) ;
+		ShortestPathAlgorithm Dijkstra = newAlgo(data) ;
 		ShortestPathSolution solutionD = Dijkstra.run() ;
 		assertEquals(solutionD.getStatus(),Status.INFEASIBLE) ; // On doit avoir une solution INFEASIBLE
 	}
@@ -105,7 +109,7 @@ public class DijkstraAlgorithmTest {
 	@Test
 	public void CheminLongueurNulle() {
 		ShortestPathData data = new ShortestPathData(graph,nodes[0],nodes[0],ArcInspectorFactory.getAllFilters().get(0)) ;
-		ShortestPathAlgorithm Dijkstra = new DijkstraAlgorithm(data) ;
+		ShortestPathAlgorithm Dijkstra = newAlgo(data) ;
 		ShortestPathSolution solutionD = Dijkstra.run() ;
 		assertEquals(solutionD.getPath().size(),1) ; // On doit avoir une chemin avec un node
 	}
@@ -123,9 +127,9 @@ public class DijkstraAlgorithmTest {
         final Path path = pathReader.readPath(graph);
         
 		ShortestPathData data = new ShortestPathData(graph,path.getOrigin(),path.getDestination(),ArcInspectorFactory.getAllFilters().get(1)) ; // On prend l'inspecteur length + only car allowed
-		ShortestPathAlgorithm Dijkstra = new DijkstraAlgorithm(data) ;
+		ShortestPathAlgorithm Dijkstra = newAlgo(data) ;
 		ShortestPathSolution solutionD = Dijkstra.run() ;
-		assertEquals(solutionD.getPath().getLength(),path.getLength(),1e-6) ; // On doit avoir obtenir un chemin egal en longueur au chemin optimal
+		assertEquals(solutionD.getPath().getLength(),path.getLength(),1e-6) ; // On doit obtenir un chemin egal en longueur au chemin optimal
 	}
 	
 	@Test
@@ -141,8 +145,8 @@ public class DijkstraAlgorithmTest {
         final Path path = pathReader.readPath(graph);
         
 		ShortestPathData data = new ShortestPathData(graph,path.getOrigin(),path.getDestination(),ArcInspectorFactory.getAllFilters().get(3)) ; // On prend l'inspecteur time + only car allowed
-		ShortestPathAlgorithm Dijkstra = new DijkstraAlgorithm(data) ;
+		ShortestPathAlgorithm Dijkstra = newAlgo(data) ;
 		ShortestPathSolution solutionD = Dijkstra.run() ;
-		assertEquals(solutionD.getPath().getMinimumTravelTime(),path.getMinimumTravelTime(),1e-6) ; // On doit avoir obtenir un chemin egal en temps au chemin optimal
+		assertEquals(solutionD.getPath().getMinimumTravelTime(),path.getMinimumTravelTime(),1e-6) ; // On doit obtenir un chemin egal en temps au chemin optimal
 	}
 }
