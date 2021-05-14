@@ -33,6 +33,10 @@ public class Label implements Comparable<Label> {
 	public double getCost() {
 		return cost;
 	}
+	
+	public double getTotalCost() { // Methode à modifier dans LabelStar
+		return this.getCost();
+	}
 
 	public void setCost(double cost) {
 		this.cost = cost;
@@ -80,13 +84,13 @@ public class Label implements Comparable<Label> {
 	@Override
 	public int compareTo(Label other) {
 		int result = 0 ;
-		if (this.getCost() < other.getCost()) {result = -1 ;}
-		if (this.getCost() == other.getCost()) {result = 0 ;}
-		if (this.getCost() > other.getCost()) { result = 1 ;}
+		if (this.getTotalCost() < other.getTotalCost()) {result = -1 ;}
+		if (this.getTotalCost() == other.getTotalCost()) {result = 0 ;}
+		if (this.getTotalCost() > other.getTotalCost()) { result = 1 ;}
 		return result;
 	}
 	@Override
 	public String toString() {
-		return " Node id : " + this.getCurrent().getId() + " Label cost : " + this.getCost() ;
+		return " Node id : " + this.getCurrent().getId() + " Label cost : " + this.getTotalCost() ;
 	}
 }

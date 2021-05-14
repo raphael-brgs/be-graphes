@@ -18,6 +18,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
+    
+    protected Label newLabel (Node node) {
+    	return new Label (node) ;
+    }
 
     @Override
     protected ShortestPathSolution doRun() {
@@ -44,7 +48,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	return solution;
         }
         // On ajoute le sommet de depart 
-        Label labDeb = new Label (data.getOrigin()) ;
+        Label labDeb = newLabel(data.getOrigin()) ;
         tabLabels[labDeb.getCurrent().getId()] = labDeb ;
         tas.insert(labDeb); // on insert l'origin dans le tas
         labDeb.setInTas(true); // on note ce label comme etant dans le tas
@@ -90,7 +94,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		
         		//On verifie que le label est bien été créé sinon on le crée
         		if (labelSuiv == null) {
-					labelSuiv = new Label(nodeSuiv);
+					labelSuiv = newLabel(nodeSuiv);
 					tabLabels[labelSuiv.getCurrent().getId()] = labelSuiv;
 				}
         		
