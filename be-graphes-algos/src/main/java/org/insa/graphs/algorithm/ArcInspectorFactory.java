@@ -78,7 +78,7 @@ public class ArcInspectorFactory {
             }
         });
 
-        // Only road allowed for cars and time:
+        // All allowed and time:
 
         filters.add(new ArcInspector() {
             @Override
@@ -106,6 +106,8 @@ public class ArcInspectorFactory {
                 return "Fastest path, all roads allowed";
             }
         });
+        
+     // Only road allowed for cars and time:
 
         filters.add(new ArcInspector() {
             @Override
@@ -136,7 +138,7 @@ public class ArcInspectorFactory {
             }
         });
 
-        // Non-private roads for pedestrian and bicycle:
+        // Non-private roads for pedestrian and bicycle time:
         filters.add(new ArcInspector() {
 
             @Override
@@ -170,6 +172,39 @@ public class ArcInspectorFactory {
 
         // Add your own filters here (do not forget to implement toString()
         // to get an understandable output!):
+        
+        // Non-private roads for pedestrian and bicycle length:
+        
+        filters.add(new ArcInspector() {
+
+            @Override
+            public boolean isAllowed(Arc arc) {
+                return arc.getRoadInformation().getAccessRestrictions()
+                        .isAllowedForAny(AccessMode.FOOT, EnumSet.complementOf(EnumSet
+                                .of(AccessRestriction.FORBIDDEN, AccessRestriction.PRIVATE)));
+            }
+
+            @Override
+            public double getCost(Arc arc) {
+                return arc.getTravelTime(
+                        Math.min(getMaximumSpeed(), arc.getRoadInformation().getMaximumSpeed()));
+            }
+
+            @Override
+            public String toString() {
+                return "Shortest path for pedestrian";
+            }
+
+            @Override
+            public int getMaximumSpeed() {
+                return 5;
+            }
+
+            @Override
+            public Mode getMode() {
+                return Mode.LENGTH;
+            }
+        });
 
         return filters;
     }

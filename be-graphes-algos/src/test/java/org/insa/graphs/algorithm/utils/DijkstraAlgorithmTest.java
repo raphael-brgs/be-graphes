@@ -89,7 +89,7 @@ public class DijkstraAlgorithmTest {
 	}
 
 	@Test
-	public void CheminSimple() {
+	public void CheminSimpleBellmanOracle() {
 		ShortestPathData data = new ShortestPathData(graph,nodes[0],nodes[4],ArcInspectorFactory.getAllFilters().get(0)) ;
 		ShortestPathAlgorithm Dijkstra = newAlgo(data) ;
 		ShortestPathAlgorithm Bellman = new BellmanFordAlgorithm(data) ;
