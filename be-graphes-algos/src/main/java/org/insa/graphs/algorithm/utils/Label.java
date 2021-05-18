@@ -79,13 +79,17 @@ public class Label implements Comparable<Label> {
 	public void clear() {
 		this.clear();
 	}
+	
+	public double getCostEstimation() {
+		return 0;
+	}
 
 
 	@Override
 	public int compareTo(Label other) {
 		int result = 0 ;
 		if (this.getTotalCost() < other.getTotalCost()) {result = -1 ;}
-		if (this.getTotalCost() == other.getTotalCost()) {result = 0 ;}
+		if (this.getTotalCost() == other.getTotalCost()) {result = (int)(this.getCostEstimation()-other.getCostEstimation()) ;}
 		if (this.getTotalCost() > other.getTotalCost()) { result = 1 ;}
 		return result;
 	}

@@ -10,7 +10,7 @@ public class LabelStar extends Label {
 	public LabelStar(Node actuel,Node destination, Mode mode, Double maxSpeed) {
 		super(actuel);
 		if (mode==Mode.TIME) {
-			this.costEstimation = actuel.getPoint().distanceTo(destination.getPoint()) / maxSpeed ; // On divise par maxSpeed afin d'avoir une estimation sur le temps ( D/V = T ) , maxspeed nous permet d'avoir une borne inférieur
+			this.costEstimation = 3.6*(actuel.getPoint().distanceTo(destination.getPoint()) / maxSpeed ); // On divise par maxSpeed afin d'avoir une estimation sur le temps ( D/V = T ) , maxspeed nous permet d'avoir une borne inférieur
 		} else if (mode==Mode.LENGTH) {
 			this.costEstimation = actuel.getPoint().distanceTo(destination.getPoint()) ;
 		}
