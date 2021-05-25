@@ -123,7 +123,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         }
 
-        // la destination a un coût infini ou n'est pas present dans les label, la solution n'est pas faisable
+        // la destination a un coût infini ou n'est pas presente dans les label, la solution n'est pas faisable
         if (tabLabels[data.getDestination().getId()] == null || tabLabels[data.getDestination().getId()].getCost() == Double.POSITIVE_INFINITY  ) {
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);
         }
